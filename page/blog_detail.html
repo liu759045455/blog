@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人博客</title>
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/base.css">
+    <link rel="stylesheet" href="./css/blog_detail.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+</head>
+
+<body>
+    <!-- 头部 -->
+    <header class="header">
+        <div class="container">
+            <a href="/" class="title">我的个人博客 | 技术博客</a>
+            <ul class="menu">
+                <li><a href="/">首页</a></li>
+                <li><a href="/sitemap.html">地图</a></li>
+                <li><a href="/about.html">关于</a></li>
+                <li><a href="/guestbook.html">留言</a></li>
+            </ul>
+            <div class="search_bar">
+                <input type="text" placeholder="输入关键词查找">
+                <button>搜索</button>
+            </div>
+        </div>
+    </header>
+    <!-- 内容区 -->
+    <div class="content">
+        <!-- 左边内容区 -->
+        <div class="content_left">
+            <!-- 博客区域 -->
+            <div class="blog" id="blog_detail">
+                <div class="blog_title">{{ title }}</div>
+                <div class="blog_msg">作者: Panda 标签: {{ tags }} 发布于: {{ date }} 浏览: ({{ views }})</div>
+                <div class="blog_blog_content" v-html="content"></div>
+            </div>
+            <!-- 评论区 -->
+            <div class="blog_comments" id="blog_comments">
+                <span class="blog_comments_msg">关于：目前有 {{ total }} 条留言</span>
+                <div class="blog_comment" v-for="(message, index) in commentList" :key="index">
+                    <span>
+                        <b class="b">
+                            {{ message.parent_name ? message.user_name + '回复' + message.parent_name : message.user_name }}
+                        </b>：发表于 {{ message.ctime }}<a href="#send_comment" @click="huifu(message.id)">[回复]</a></span>
+                    <div>{{ message.comment }}</div>
+                </div>
+            </div>
+            <!-- 发表评论区 -->
+            <div class="send_comment" id="send_comment">
+                <span>发表评论</span>
+                <div>
+                    <input type="hidden" id="reply" value="-1">
+                    <input type="text" placeholder="昵称" id="comment_name">
+                    <input type="text" placeholder="邮箱(评论回复时能收到通知)" id="comment_email">
+                </div>
+                <div>
+                    <textarea placeholder="无意义的内容我可能不会回复你" id="comment_content"></textarea>
+                </div>
+                <div>
+                    <img src="/captcha" alt="" id="comment_validation">
+                    <input type="text" placeholder="验证码" id="comment_code">
+                </div>
+                <button @click="sendComment">提交评论</button>
+
+            </div>
+
+        </div>
+        <!-- 右边内容区 -->
+        <div class="content_right">
+            <div class="right_moodule" id="right_moodule">
+                <div class="module_title">随机标签云</div>
+                <a href="/" v-for="(tag, index) in tags" :style="{color:randColor(), fontSize: randSize()}"
+                    :key="index">{{ tag }}</a>
+            </div>
+            <div class="right_moodule" id="new_hot">
+                <div class="module_title">最近热门</div>
+                <ul>
+                    <li v-for="(title, index) in titleList" :key="index">
+                        <a :href="title.link">{{ title.title }}</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="right_moodule" id="new_comments">
+                <div class="module_title">最新评论</div>
+                <ul>
+                    <li v-for="(comment, index) in commentsList" :key="index">
+                        <div>
+                            <span>{{ comment.name }}</span>
+                            <span class="pull_right">{{ comment.date }}</span>
+                        </div>
+                        <p>{{ comment.comment }}</p>
+                    </li>
+                </ul>
+            </div>
+            <div class="right_moodule">
+                <div class="module_title">友情链接</div>
+                <span class="link"><a href="/">挨踢茶馆</a></span>
+                <span class="link"><a href="/">挨踢茶馆</a></span>
+                <span class="link"><a href="/">挨踢茶馆</a></span>
+                <span class="link"><a href="/">挨踢茶馆</a></span>
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        <ul>
+            <li><a href="/">C/C++</a></li>
+            <li><a href="/">CSS/DIV</a></li>
+            <li><a href="/">java</a></li>
+            <li><a href="/">javacript</a></li>
+            <li><a href="/">关于SEO</a></li>
+            <li><a href="/">分享经验</a></li>
+            <li><a href="/">听听音乐</a></li>
+            <li><a href="/">幽默搞笑</a></li>
+            <li><a href="/">建站经验</a></li>
+            <li><a href="/">新闻资讯</a></li>
+            <li><a href="/">模拟飞行</a></li>
+            <li><a href="/">片言碎语</a></li>
+        </ul>
+        <p>Copyright © 2010-2020 个人博客 All rights reserved. 由免费开源的WordPress强力驱动</p>
+    </footer>
+    <script src="./js/moment.js"></script>
+    <script src="./js/axios.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <script src="./js/base.js"></script>
+    <script src="./js/blog_detail.js"></script>
+</body>
+
+</html>
